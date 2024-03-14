@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Image, View } from "react-native";
+import { Image, View, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import styles from "../config/styles";
 
@@ -38,6 +38,7 @@ export default function ProdutosScreen() {
   };
 
   return (
+    <ScrollView style={styles.scrollView}>
     <View style={styles.container}>
       {/* note que aqui estamos usando o TEXT de Native Paper*/}
       {/* ele possui alguns props que podemos usar para melhorar a UI */}
@@ -69,5 +70,8 @@ export default function ProdutosScreen() {
         )
       }
     </View>
+    </ScrollView>
   );
 }
+
+

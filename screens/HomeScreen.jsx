@@ -13,7 +13,7 @@ export default function HomeScreen({}) {
       <Text variant="titleLarge">Inicial</Text>
       <Text variant="bodyMedium">Bem vindo</Text>
       <Image
-        source={require("../../assets/icon.png")}
+        source={require("../assets/icon.png")}
         style={{ width: 200, height: 200 }}
       />
       <Button
