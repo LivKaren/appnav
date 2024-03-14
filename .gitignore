@@ -16,7 +16,7 @@ web-build/
 *.key
 *.mobileprovision
 
-# Metro
+# Metroexp
 .metro-health-check*
 
 # debug
