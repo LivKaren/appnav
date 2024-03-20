@@ -1,51 +1,53 @@
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "../screens/HomeScreen";
-import SobreScreen from "../screens/SobreScreen";
-import ProdutosScreen from "../screens/ProdutosScreen";
+import { View } from "react-native"; // importei do native
+import { Card, Text } from "react-native-paper"; // importei do native paper
+import styles from "../config/styles";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const Stack = createNativeStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+const API_KEY = "58f0cf79195fef97df91af42c5973568"; //peguem a de vocês
+const CITY_NAME = "Joinville"; //peguem a de vocês
 
-export default function AppNavigator() {
+export default function TempoScreen() {
+  const [tempoData, setTempoData] = useState(null);
+
+  useEffect(() => {
+    const fetchTempo = async () => {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}&units=metric`;
+
+      // Faça a requisição usando Axios
+      try {
+        const response = await axios.get(url);
+        console.log(response.data);
+        // // A resposta está disponível no objeto response.data
+
+        setTempoData(response.data);
+      } catch (error) {
+        // Trate o erro
+        console.error("There was an error!", error);
+      }
+    };
+    fetchTempo();
+  }, []); // array vazio no final de useEffect simula simboliza que a função será executada apenas uma vez, quando o componente for montado
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="TabNavigator" // funciona como uma ID da tela, vamos usa-la para chamar esta tela depois
-        component={TabNavigator}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function TabNavigator() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="HomeScreen" // id da tela
-        component={HomeScreen} // aqui é onde será exibido a tela do componente HomeScreen.jsx
-        options={{
-          title: "Home",
-          tabBarIcon: "home",
-        }}
-      />
-      <Tab.Screen
-        name="ProdutosScreen"
-        component={ProdutosScreen}
-        options={{
-          title: "Produtos",
-          tabBarIcon: "cart",
-        }}
-      />
-      <Tab.Screen
-        name="SobreScreen"
-        component={SobreScreen}
-        options={{
-          title: "Sobre",
-          tabBarIcon: "information",
-        }}
-      />
-    </Tab.Navigator>
+    <View style={styles.container}>
+      <Text variant="bodyLarge">Tempo em {CITY_NAME}</Text>
+      {tempoData && (
+        <Card style={styles.card}>
+          <Card.Title title="Detalhes do Tempo" />
+          <Card.Content>
+            <Text>Temperatura: {tempoData.main.temp}°C</Text>
+            <Text>Sensação térmica: {tempoData.main.feels_like}°C</Text>
+            <Text>Temperatura mínima: {tempoData.main.temp_min}°C</Text>
+            <Text>Temperatura máxima: {tempoData.main.temp_max}°C</Text>
+            <Text>Pressão: {tempoData.main.pressure} hPa</Text>
+            <Text>Umidade: {tempoData.main.humidity}%</Text>
+            <Text>Visibilidade: {tempoData.visibility / 1000} km</Text>
+            <Text>Vento: {tempoData.wind.speed} m/s</Text>
+            <Text>Descrição: {tempoData.weather[0].description}</Text>
+          </Card.Content>
+        </Card>
+      )}
+    </View>
   );
 }
