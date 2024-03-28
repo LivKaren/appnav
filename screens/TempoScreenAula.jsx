@@ -3,40 +3,29 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import styles from "../config/styles";
- 
-/**
- *
- * LOGICA SIMPLES
- * - ENTREI NESSA TELA
- * - OPA! PRECISO BUSCAR A TEMPERATURA
- * - COMO? QUEM É O CARA QUE EXECUTA QUANDO ENTRA?
- * - LEMBREI É O U... COM [] VAZIO
- * -
- */
-const API = "58f0cf79195fef97df91af42c5973568";
- 
+
+
+const API = "82f57084a942320a04120e0620bc8012";
+const URL = `https://api.openweathermap.org/data/2.5/weather?q=Joinville&appid=${API}&units=metric`;
+
 export default function TempoScreenAula() {
   const [temperatura, setTemperatura] = useState("");
   const [icone, setIcone] = useState("");
-  const [cidade, setCidade] = useState("Joinville");
- 
-  const fetchTempo = async () => {
- 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${API}&units=metric`;
-   
-    const resposta = await fetch(URL);
 
+  const fetchTempo = async () => {
+    
+    const resposta = await fetch(URL);
+   
     const data = await resposta.json();
     console.log(resposta); 
     console.log(data); 
     setTemperatura(data);
     setIcone(data.weather[0].icon);
   };
- 
+
   useEffect(() => {
     fetchTempo();
   }, []);
-  
  
   return (
     <View style={styles.container}>
