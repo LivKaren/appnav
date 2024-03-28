@@ -1,35 +1,46 @@
-import { View } from "react-native"; // importei do native
-import { Text } from "react-native-paper"; // importei do native paper
+import { View } from "react-native"; 
+import { Card, Text } from "react-native-paper"; 
 import styles from "../config/styles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const API_KEY = "#%#%@#@#¨@#¨@#¨@#¨@#¨@#";//peguem a de vocês
-const CITY_NAME = "Joinville, SC";//peguem a de vocês
+const API_KEY = "82f57084a942320a04120e0620bc8012"; 
+const CITY_NAME = "Joinville"; 
 
+export default function TempoScreen() {
+  const [tempoData, setTempoData] = useState(null);
 
-export default function TempoScreen(){
+  useEffect(() => {
+    const fetchTempo = async () => {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}&units=metric`;
 
-    useEffect(()=>{
-        const fetchTempo = async () =>{
-            // recebe o valor do api em texto 
-            const resposta = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}&units=metric`);
-            
-            // basico de fetch json
-            // tranforma o texto em json
-            const data = await resposta.json();
-            console.log(data);
-        }
-    })
+     
+      try {
+        const response = await axios.get(url);
+        console.log(response.data);
+       
 
-    return(
-        <View
-            style={styles.container}
-        >
-            <Text
-                variant="bodyLarge" // variantes que só o paper possui
-            >Tempo</Text>
-        </View>
-    )
+        setTempoData(response.data);
+      } catch (error) {
+        
+        console.error("There was an error!", error);
+      }
+    };
+    fetchTempo();
+  }, []); 
+
+  return (
+    <View style={styles.container}>
+      <Text variant="bodyLarge">Tempo em {CITY_NAME}</Text>
+      {tempoData && (
+        <Card style={styles.card}>
+          <Card.Title title="Detalhes do Tempo" />
+          <Card.Content>
+            <Text>Temperatura: {tempoData.main.temp}°C</Text>
+            {}
+          </Card.Content>
+        </Card>
+      )}
+    </View>
+  );
 }
-
-
