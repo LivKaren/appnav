@@ -38,8 +38,12 @@ export default function HomeScreen({}) {
  
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
       {}
       {}
+=======
+    
+>>>>>>> fd4cfdb5cb1241673f2786b5a6342ba1979fa622
       <Text variant="titleLarge">Inicial</Text>
       <Text variant="bodyMedium">Bem vindo</Text>
       <Image
